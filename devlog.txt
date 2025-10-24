@@ -1,0 +1,22 @@
+mustafaA -- 2025-10-22 10:50
+  - created correct repository
+  - added teamFlag, README to CJWM repo
+  - Created PR for linked submodule
+  - Assisted with initial wiki design ideas
+
+codyW -- 2025-10-22 10:20
+  - Created initial UML diagram for design doc in mermaid.js
+  - Facilitated discussion about what components should be part of project/wiki
+
+jiefengO -- 2025-10-22 21:00
+  - Polished and completed design doc structure in tandem with group members
+  - Procured initial design doc pdf
+
+williamL -- 2025-10-22 21:00
+  - Assisted with initial design doc planning
+  - Procured 3x hardcopies of design doc to be submitted next class
+
+INITIAL DD REVIEW -- 2025-10-23 21:00
+  - A site map is quite necessary for our next design document so we can know how each page relates to each other
+  - Should include more fleshed-out descriptions of how login/logout should be implemented
+  - cant store data in lists for tables: should aim to use a different data storing system with SQLite
