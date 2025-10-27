@@ -20,3 +20,6 @@ INITIAL DD REVIEW -- 2025-10-23 21:00
   - A site map is quite necessary for our next design document so we can know how each page relates to each other
   - Should include more fleshed-out descriptions of how login/logout should be implemented
   - cant store data in lists for tables: should aim to use a different data storing system with SQLite
+
+jiefengO -- 2025-10-27 0:00
+  - Worked on polishing and completing new design doc w/ group
