@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET','POST'])
 def main():
-    return render_template('index.html')
+    return render_template('template.html')
     print("does this work")
 
 if __name__ == "__main__": #false if this file imported as module
