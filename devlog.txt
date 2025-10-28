@@ -36,3 +36,12 @@ mustafaA -- 2025-10-27 0:00
 
 williamL -- 2025-10-27 0:00
   - Procured 3x hardcopies of design doc to be submitted next class
+
+mustafaA -- 2025-10-27 21:00
+[Design Doc Changes]
+  - Split up the python implementation of the blog components into different files
+  - __init__.py : app setup, create flask app, configure settings,
+  - data.py : handle data, define tables, handle database
+  - routes.py : app logic, connect front-end with back-end, handle user actions,                       define all urls
+  - helpers.py : support functions for authentication, etc.
+  - to-do: create new component map with new python files
