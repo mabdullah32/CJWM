@@ -11,8 +11,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET','POST'])
 def main():
-    return render_template('template.html')
-    print("does this work")
+    return render_template('home.html')
 
 if __name__ == "__main__": #false if this file imported as module
     app.debug = True  #enable PSOD, auto-server-restart on code chg
