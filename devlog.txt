@@ -50,3 +50,6 @@ mustafaA -- 2025-10-27 21:00
 codyW -- 2025-10-28 5:20
   - Filled in ReadMe.md description of Wiki, Install Guides, and Launch Codes
   - Updated Component map with how the python files interact with each other and overall better design.
+
+jiefengO -- 2025-10-28 11:00
+  - Added py files and linked home.html to __init__.py
