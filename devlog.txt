@@ -45,3 +45,6 @@ mustafaA -- 2025-10-27 21:00
   - routes.py : app logic, connect front-end with back-end, handle user actions,                       define all urls
   - helpers.py : support functions for authentication, etc.
   - to-do: create new component map with new python files
+
+codyW -- 2025-10-28 5:20
+  - Filled in ReadMe.md description of Wiki, Install Guides, and Launch Codes
