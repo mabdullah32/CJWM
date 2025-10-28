@@ -5,6 +5,7 @@ mustafaA -- 2025-10-22 10:50
   - Assisted with initial wiki design ideas
 
 codyW -- 2025-10-22 10:20
+  - Created Initial Google Docs and shared to members
   - Created initial UML diagram for design doc in mermaid.js
   - Facilitated discussion about what components should be part of project/wiki
 
@@ -48,3 +49,4 @@ mustafaA -- 2025-10-27 21:00
 
 codyW -- 2025-10-28 5:20
   - Filled in ReadMe.md description of Wiki, Install Guides, and Launch Codes
+  - Updated Component map with how the python files interact with each other and overall better design.
