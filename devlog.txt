@@ -50,3 +50,12 @@ mustafaA -- 2025-10-27 21:00
 codyW -- 2025-10-28 5:20
   - Filled in ReadMe.md description of Wiki, Install Guides, and Launch Codes
   - Updated Component map with how the python files interact with each other and overall better design.
+
+mustafaA 2025-10-28 10:20
+  - Added intial flask capabilities, set up file/project structure
+
+codyW -- 2025-10-28 17:00
+  - updated edit_blogs.html
+
+jiefengO -- 2025-10-28 17:00
+  - Added basic html templates for each html file
