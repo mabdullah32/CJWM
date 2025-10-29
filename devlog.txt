@@ -59,3 +59,9 @@ codyW -- 2025-10-28 17:00
 
 jiefengO -- 2025-10-28 17:00
   - Added basic html templates for each html file
+
+mustafaA -- 2025-10-28 07:30
+-- EXTERNAL README REVIEW --
+- Install guide summary: Clone the repository, navigate into the repository, install the dependencies
+- Needs to have the user of the app going into the app directory instead of the base repo, doesn't run the flask app either
+- Launch codes: export FLASK_APP=app --> this isn't as specific as it could be
