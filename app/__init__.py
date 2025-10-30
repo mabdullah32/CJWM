@@ -10,6 +10,8 @@ c = db.cursor()
 #Flask routes home.html
 @app.route("/", methods=['GET','POST'])
 def home():
+    sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp")
+    sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html')
 
 #Flask routes profile.html
