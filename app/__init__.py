@@ -24,7 +24,10 @@ def blogs(blog_id):
     if blog_id == None:
         return "Page Not Found 404"
     else:
-        blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+        try:
+            blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+        except Exception:
+            return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
         blog_info = [x for x in blog_db_info][0]
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
