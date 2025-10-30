@@ -1,25 +1,21 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import sqlite3
 
-app = Flask(__name__) #initializes flask
+app = Flask(__name__)
 
 DB_FILE="database.db"
-db = sqlite3.connect(DB_FILE, check_same_thread=False) #initializes sqlite3
+db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
-#Flask routes home.html
 @app.route("/", methods=['GET','POST'])
 def home():
     return render_template('home.html')
 
-#Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
 def profile():
     return render_template('profile.html')
 
-#Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
-@app.route("/blogs/<blog_id>", methods=['GET','POST'])
 def blogs(blog_id):
     if blog_id == None:
         return "Page Not Found 404"
@@ -28,18 +24,23 @@ def blogs(blog_id):
         blog_info = [x for x in blog_db_info][0]
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
+@app.route("/edit_blogs/<int:blog_id>", methods=['GET','POST'])
+def edit_blogs(blog_id):
+    if request.method == 'POST':
+        blog_name = request.form.get('blog_name')
+        content = request.form.get('content')
+        c.execute(f"UPDATE blogs SET blog_name = ?, content = ? WHERE blog_id = ?", (blog_name, content, blog_id))
+        db.commit()
+        return redirect(f"/blogs/{blog_id}.html")
+    else:
+        blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+        blog_info = [x for x in blog_db_info][0]
+        return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
-if __name__ == "__main__": #false if this file imported as module
-    app.debug = True  #enable PSOD, auto-server-restart on code chg
+if __name__ == "__main__":
+    app.debug = True
     app.run()
 
-
-
-#==========================================================
-#SQLITE3 DATABASE LIES BENEATH HERE
-#==========================================================
-
-#users (username, password, creation_date, last_login)
 c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
@@ -48,7 +49,6 @@ CREATE TABLE IF NOT EXISTS users (
     last_login DATE
 )""")
 
-#blogs (blog_id, blog_name, author_name, content, timestamp)
 c.execute("""
 CREATE TABLE IF NOT EXISTS blogs (
     blog_id INTEGER PRIMARY KEY,
@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS blogs (
     FOREIGN KEY (author_name) REFERENCES users(username)
 )""")
 
-#edits (edit_id, blog_id, old_content, new_content, timestamp)
 c.execute("""
 CREATE TABLE IF NOT EXISTS edits (
     edit_id INTEGER PRIMARY KEY,
@@ -70,8 +69,7 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-#Generates Blog 1 for testing purposes
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Frogs', 'Harry Potter', 'I AM FROG FROG IS AWESOME', 125234532)")
 
-db.commit() #save changes
-db.close()  #close database
+db.commit()
+db.close()
