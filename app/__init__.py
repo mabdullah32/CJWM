@@ -19,10 +19,10 @@ def profile():
 
 #Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
-@app.route("/blogs/<blog_id>", methods=['GET','POST'])
+@app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
     if blog_id == None:
-        return "Page Not Found 404"
+        return "Page Not Found 404" #doesn't seem to do anything?
     else:
         try:
             blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     blog_name STRING,
     author_name STRING,
     content STRING,
-    timestamp INTEGER,
+    timestamp TEXT,
     FOREIGN KEY (author_name) REFERENCES users(username)
 )""")
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS edits (
 )""")
 
 #Generates Blog 1 for testing purposes
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Frogs', 'Harry Potter', 'I AM FROG FROG IS AWESOME', 125234532)")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Frogs', 'Harry Potter', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
 db.close()  #close database
