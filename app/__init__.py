@@ -19,6 +19,7 @@ def profile():
 
 #Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
+@app.route("/blogs/<blog_id>", methods=['GET','POST'])
 def blogs(blog_id):
     if blog_id == None:
         return "Page Not Found 404"
