@@ -90,3 +90,7 @@ CodyW -- 2025-10-30 6:30
 - Added blog onto the website through /blogs/1.
 - Added edit_blog onto the website with /blogs/1.
 - Fixed syntax errors & also recreated the html for both pages.
+
+jiefengO -- 2025-10-30 11:00
+- Fixed a bug where the blog would not load depending on the browser.
+- Added an exception handling so blogs that don't exist would not crash Flask.

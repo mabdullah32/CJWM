@@ -31,13 +31,6 @@ def blogs(blog_id):
         blog_info = [x for x in blog_db_info][0]
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
-
-if __name__ == "__main__": #false if this file imported as module
-    app.debug = True  #enable PSOD, auto-server-restart on code chg
-    app.run()
-
-
-
 #==========================================================
 #SQLITE3 DATABASE LIES BENEATH HERE
 #==========================================================
@@ -73,8 +66,14 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-#Generates Blog 1 for testing purposes
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Frogs', 'Harry Potter', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
+#Generates Blog 1 and 2 for testing purposes
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
+
+if __name__ == "__main__": #false if this file imported as module
+    app.debug = True  #enable PSOD, auto-server-restart on code chg
+    app.run()
+
 db.close()  #close database
