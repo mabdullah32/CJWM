@@ -51,6 +51,9 @@ codyW -- 2025-10-28 5:20
   - Filled in ReadMe.md description of Wiki, Install Guides, and Launch Codes
   - Updated Component map with how the python files interact with each other and overall better design.
 
+jiefengO -- 2025-10-28 11:00
+  - Added py files and linked home.html to __init__.py
+
 mustafaA 2025-10-28 10:20
   - Added intial flask capabilities, set up file/project structure
 
@@ -65,3 +68,20 @@ mustafaA -- 2025-10-28 07:30
 - Install guide summary: Clone the repository, navigate into the repository, install the dependencies
 - Needs to have the user of the app going into the app directory instead of the base repo, doesn't run the flask app either
 - Launch codes: export FLASK_APP=app --> this isn't as specific as it could be
+
+williamL -- 2025-10-29 10:30
+- Edited profile.html skeleton to show user info and list of blog titles, edit profile, and navigation links.
+- Edited __init__.py to temporarily link to profile.html through Flask.
+
+codyW -- 2025-10-29 10:47
+- Edited model.py setting up users sqlite database, blogs sqlite database, and edits sqlite database.
+- Filled in all the sqlite databases with the nessesary variables and nessesary primary keys.
+
+jiefengO -- 2025-10-29 11:00
+- Added template for blogs.html and home.html that can be filled in with data later.
+- Began making example blog data for testing purposes.
+
+jiefengO -- 2025-10-29 10:45
+- Fixed databases to have correct names, primary keys, and foreign keys.
+- User-made blogs can now be shown using blogs.html as a template for all blogs.
+- Added .gitignore
