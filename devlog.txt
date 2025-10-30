@@ -53,3 +53,17 @@ codyW -- 2025-10-28 5:20
 
 jiefengO -- 2025-10-28 11:00
   - Added py files and linked home.html to __init__.py
+mustafaA 2025-10-28 10:20
+  - Added intial flask capabilities, set up file/project structure
+
+codyW -- 2025-10-28 17:00
+  - updated edit_blogs.html
+
+jiefengO -- 2025-10-28 17:00
+  - Added basic html templates for each html file
+
+mustafaA -- 2025-10-28 07:30
+-- EXTERNAL README REVIEW --
+- Install guide summary: Clone the repository, navigate into the repository, install the dependencies
+- Needs to have the user of the app going into the app directory instead of the base repo, doesn't run the flask app either
+- Launch codes: export FLASK_APP=app --> this isn't as specific as it could be
