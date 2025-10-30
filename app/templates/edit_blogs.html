@@ -1,30 +1,29 @@
 <!DOCTYPE html>
+<!--
+  Mustafa Abdullah, William Li, Jiefeng Ou, Cody Wong
+  CJWM
+  P00: Move Slowly and Fix Things
+ -->
 <html>
 <head>
-<title>Page Title</title>
+<title>Edit Blog</title>
 </head>
 <body>
 
-<h1>BlogName</h1>
-<p>This is a paragraph.</p>
+<h1>Edit Blog</h1>
 
+<form method="POST">
+    <label>Blog Name:</label><br>
+    <input type="text" name="blog_name" value="{{blog_name}}" required><br><br>
+    
+    <label>Content:</label><br>
+    <textarea name="content" rows="10" cols="50" required>{{content}}</textarea><br><br>
+    
+    <button type="submit">Save</button>
+</form>
 
-<button name="Make Save" onclick="INSERTFUNCTNAME">Forward</button>
-
-</body>
-</html> 
- <!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
-
-<h1>BlogName</h1>
-<p>This is a paragraph.</p>
-
-
-<button name="Make Save" onclick="INSETFUNCTNAME">Forward</button>
+<br>
+<a href="/blogs/{{blog_id}}.html">Cancel</a>
 
 </body>
-</html> 
+</html>

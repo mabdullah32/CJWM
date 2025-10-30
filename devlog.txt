@@ -85,3 +85,8 @@ jiefengO -- 2025-10-29 10:45
 - Fixed databases to have correct names, primary keys, and foreign keys.
 - User-made blogs can now be shown using blogs.html as a template for all blogs.
 - Added .gitignore
+
+CodyW -- 2025-10-30 6:30
+- Added blog onto the website through /blogs/1.
+- Added edit_blog onto the website with /blogs/1.
+- Fixed syntax errors & also recreated the html for both pages.
