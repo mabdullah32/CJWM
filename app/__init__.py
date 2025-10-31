@@ -20,8 +20,8 @@ def home():
 def handle_search_query():
     blog_req = request.args['searched_blog']
     print([x for x in c.execute("SElECT blog_id, blog_name FROM blogs")])
-    sorted_searched_blogs = c.execute(f"SELECT EXISTS blog_id, blog_name FROM blogs WHERE blog_name LIKE {blog_req} ORDER BY timestamp DESC")
-    sorted_searched_blogs_list = [x for x in sorted_blogs]
+    sorted_searched_blogs = c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '{blog_req}' ORDER BY timestamp DESC")
+    sorted_searched_blogs_list = [x for x in sorted_searched_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_searched_blogs_list)
 
 #Flask routes profile.html
