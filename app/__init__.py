@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__) #initializes flask
 
@@ -32,6 +33,29 @@ def blogs(blog_id):
             return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
         blog_info = [x for x in blog_db_info][0]
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
+
+#Flask routes edit_blogs.html
+@app.route("/blogs/<blog_id>/edit", methods=['GET','POST'])
+def edit_blog(blog_id):
+    if request.method == 'POST':
+        new_blog_name = request.form.get('blog_name')
+        new_content = request.form.get('content')
+        
+        blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
+        old_content = blog_info[0]
+        
+        c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
+                  (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        
+        c.execute("UPDATE blogs SET blog_name = ?, content = ?, timestamp = ? WHERE blog_id = ?",
+                  (new_blog_name, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), blog_id))
+        
+        db.commit()
+        return redirect(f'/blogs/{blog_id}')
+    
+    blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+    blog_info = [x for x in blog_db_info][0]
+    return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
 #==========================================================
 #SQLITE3 DATABASE LIES BENEATH HERE
