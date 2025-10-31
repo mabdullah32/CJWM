@@ -30,15 +30,9 @@
         <h2 style="margin-top:0; font-weight:bold;">main foo heading</h2>
 
         <p style="color:black;">
-          Blog 1: <a href="blogs/1">Blog 1</a>
-        </p>
-
-        <p style="color:black;">
-          Blog 2:
-        </p>
-
-        <p style="color:black;">
-          Blog 3:
+          {% for blog_id, blog_name in sorted_blogs_list %}
+            <li><a href="blogs/{{blog_id}}">{{blog_name}}</a></li>
+          {% endfor %}
         </p>
       </main>
     </div>
