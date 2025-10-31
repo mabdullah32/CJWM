@@ -126,3 +126,6 @@ ehthumbs.db
 # Filenames with special characters
 **/*[\\/\:;*?!'"<>|$º•¶§∞¢£]*
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#SQLite3 database
+*.db
