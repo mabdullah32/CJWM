@@ -97,3 +97,8 @@ jiefengO -- 2025-10-30 11:00
 jiefengO -- 2025-10-30 20:06
 - Tested how timestamp in blogs database is written using datetime(), allowing sorting of blogs based on time and date.
 - Added a list of all blogs, sorted by latest time, to home page.
+
+CodyW -- 2025-10-31 8:25
+- Implemented the save feature in flash using "GET" and "POST" to save data to the sqlite table.
+- Added from datetime import datetime to smooth out or process.
+- Fixed the Cancel Link to actually go back into the original blog.
