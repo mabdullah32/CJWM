@@ -15,6 +15,13 @@ def home():
     sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
 
+
+@app.route("/handle_search_query", methods=['GET', 'POST'])
+def handle_search_query():
+    blog_req = request.args['searched_blog']
+    print(blog_req)
+    return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
+
 #Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
 def profile():
@@ -40,19 +47,19 @@ def edit_blog(blog_id):
     if request.method == 'POST':
         new_blog_name = request.form.get('blog_name')
         new_content = request.form.get('content')
-        
+
         blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
         old_content = blog_info[0]
-        
+
         c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
                   (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-        
+
         c.execute("UPDATE blogs SET blog_name = ?, content = ?, timestamp = ? WHERE blog_id = ?",
                   (new_blog_name, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), blog_id))
-        
+
         db.commit()
         return redirect(f'/blogs/{blog_id}')
-    
+
     blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])

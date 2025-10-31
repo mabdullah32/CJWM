@@ -29,6 +29,11 @@
       <main style="margin-left:180px; color:black;">
         <h2 style="margin-top:0; font-weight:bold;">main foo heading</h2>
 
+        <form action="/handle_search_query">
+          <input type="text" name="searched_blog" placeholder="Search">
+          <input type="submit" name="sub1">
+        </form>
+
         <p style="color:black;">
           {% for blog_id, blog_name in sorted_blogs_list %}
             <li><a href="blogs/{{blog_id}}">{{blog_name}}</a></li>
