@@ -81,10 +81,9 @@ jiefengO -- 2025-10-29 11:00
 - Added template for blogs.html and home.html that can be filled in with data later.
 - Began making example blog data for testing purposes.
 
-jiefengO -- 2025-10-29 10:45
+jiefengO -- 2025-10-29 22:45
 - Fixed databases to have correct names, primary keys, and foreign keys.
 - User-made blogs can now be shown using blogs.html as a template for all blogs.
-- Added .gitignore
 
 CodyW -- 2025-10-30 6:30
 - Added blog onto the website through /blogs/1.
@@ -94,3 +93,7 @@ CodyW -- 2025-10-30 6:30
 jiefengO -- 2025-10-30 11:00
 - Fixed a bug where the blog would not load depending on the browser.
 - Added an exception handling so blogs that don't exist would not crash Flask.
+
+jiefengO -- 2025-10-30 20:06
+- Tested how timestamp in blogs database is written using datetime(), allowing sorting of blogs based on time and date.
+- Added a list of all blogs, sorted by latest time, to home page.
