@@ -31,7 +31,7 @@
 
         <p style="color:black;">
           {% for blog_id, blog_name in sorted_blogs_list %}
-            <li><a href="blogs/{{blog_id}}">{{blog_name}}</a></li>
+            <li><a href="blogs/{{blog_id}}">{{blog_name}}</a> <a href="blogs/{{blog_id}}/edit">(edit)</a></li>
           {% endfor %}
         </p>
       </main>
