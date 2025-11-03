@@ -102,3 +102,6 @@ CodyW -- 2025-10-31 8:25
 - Implemented the save feature in flash using "GET" and "POST" to save data to the sqlite table.
 - Added from datetime import datetime to smooth out or process.
 - Fixed the Cancel Link to actually go back into the original blog.
+
+mustafaA -- 2025-11-02 23:30
+- Fixed merge conflicts across all branches, updated with main __init__.py file
