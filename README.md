@@ -14,8 +14,8 @@ A weblog hosting site where users can register to create, update, and edit their
 
 ### Install Guides:
 Pre-requisites:
-  -python3 installed 
-  -git installed
+  - python3 installed 
+  - git installed
 
 
 Look at the steps after installing pre-requisites 
