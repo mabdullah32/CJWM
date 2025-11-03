@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -9,7 +10,9 @@ c = db.cursor()
 
 @app.route("/", methods=['GET','POST'])
 def home():
-    return render_template('home.html')
+    sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
+    sorted_blogs_list = [x for x in sorted_blogs]
+    return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -20,31 +23,46 @@ def profile():
     return render_template('profile.html')
 
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
+@app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
     if blog_id == None:
-        return "Page Not Found 404"
+        return "Page Not Found 404" #doesn't seem to do anything?
     else:
-        blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+        try:
+            blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+        except Exception:
+            return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
         blog_info = [x for x in blog_db_info][0]
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
-@app.route("/edit_blogs/<int:blog_id>", methods=['GET','POST'])
-def edit_blogs(blog_id):
+#Flask routes edit_blogs.html
+@app.route("/blogs/<blog_id>/edit", methods=['GET','POST'])
+def edit_blog(blog_id):
     if request.method == 'POST':
-        blog_name = request.form.get('blog_name')
-        content = request.form.get('content')
-        c.execute(f"UPDATE blogs SET blog_name = ?, content = ? WHERE blog_id = ?", (blog_name, content, blog_id))
+        new_blog_name = request.form.get('blog_name')
+        new_content = request.form.get('content')
+        
+        blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
+        old_content = blog_info[0]
+        
+        c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
+                  (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        
+        c.execute("UPDATE blogs SET blog_name = ?, content = ?, timestamp = ? WHERE blog_id = ?",
+                  (new_blog_name, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), blog_id))
+        
         db.commit()
-        return redirect(f"/blogs/{blog_id}.html")
-    else:
-        blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
-        blog_info = [x for x in blog_db_info][0]
-        return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
+        return redirect(f'/blogs/{blog_id}')
+    
+    blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+    blog_info = [x for x in blog_db_info][0]
+    return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
-if __name__ == "__main__":
-    app.debug = True
-    app.run()
+#==========================================================
+#SQLITE3 DATABASE LIES BENEATH HERE
+#==========================================================
 
+#users (username, password, creation_date, last_login)
 c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
@@ -59,7 +77,7 @@ CREATE TABLE IF NOT EXISTS blogs (
     blog_name STRING,
     author_name STRING,
     content STRING,
-    timestamp INTEGER,
+    timestamp TEXT,
     FOREIGN KEY (author_name) REFERENCES users(username)
 )""")
 
@@ -73,7 +91,14 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Frogs', 'Harry Potter', 'I AM FROG FROG IS AWESOME', 125234532)")
+#Generates Blog 1 and 2 for testing purposes
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
-db.commit()
-db.close()
+db.commit() #save changes
+
+if __name__ == "__main__": #false if this file imported as module
+    app.debug = True  #enable PSOD, auto-server-restart on code chg
+    app.run()
+
+db.close()  #close database
