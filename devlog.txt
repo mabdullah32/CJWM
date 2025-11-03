@@ -105,3 +105,8 @@ CodyW -- 2025-10-31 8:25
 
 jiefengO -- 2025-10-31 11:13
 - Working on allowing home page to process search queries for blogs and return a list of related blogs
+
+jiefengO -- 2025-11-03 10:56
+- Reviewed install guide and launch codes of fore and geodes
+- Helped edit our readme
+- Added extra test cases for db
