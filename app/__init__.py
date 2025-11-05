@@ -19,8 +19,9 @@ def home():
 @app.route("/handle_search_query", methods=['GET', 'POST'])
 def handle_search_query():
     blog_req = request.args['searched_blog']
-    sorted_searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '{blog_req}' ORDER BY timestamp DESC")]
-    return render_template('home.html', sorted_blogs_list = sorted_searched_blogs_list)
+    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
+    return render_template('home.html', sorted_blogs_list = searched_blogs_list)
 
 #Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
@@ -102,7 +103,7 @@ CREATE TABLE IF NOT EXISTS edits (
 #Generates Blog 1 and 2 for testing purposes
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'Harry Potter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'Harry Potter', 'He's a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'Harry Potter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
