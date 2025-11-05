@@ -18,14 +18,14 @@ Pre-Requisites:
   - git installed
 
 In your terminal, type:
- ```
-   git clone git@github.com:mabdullah32/CJWM.git
+```
+git clone git@github.com:mabdullah32/CJWM.git
 ```
 ```
-  cd CJWM
+cd CJWM
 ```
 ```
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 
