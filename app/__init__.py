@@ -8,6 +8,7 @@ DB_FILE="database.db"
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
+#Flask routes home page
 @app.route("/", methods=['GET','POST'])
 def home():
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
@@ -19,7 +20,8 @@ def home():
 def handle_search_query():
     blog_req = request.args['searched_blog']
     searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
-    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
+    print(searched_blogs_list)
     return render_template('home.html', sorted_blogs_list = searched_blogs_list)
 
 #Flask routes profile.html
@@ -110,4 +112,3 @@ if __name__ == "__main__": #false if this file imported as module
     app.run()
 
 db.close()  #close database
-

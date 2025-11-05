@@ -123,3 +123,6 @@ jiefengO -- 2025-11-04 23:43
 jiefengO -- 2025-11-05 00:23
 - Search query shows blog with name and content that matches, ordered by exact name -> word in name -> word in content
 - Design document no longer includes multiple python files because we've switched from that to using just one file.
+
+jiefengO -- 2025-11-05 11:00
+- Fixed a bug where multiple of the same search query can be shown in the home page.
