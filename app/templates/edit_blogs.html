@@ -17,9 +17,11 @@
 <div class="middle" style="background-color:#909090; padding:10px; overflow:auto;">
 
   <nav style="float:left; width:150px; font-weight:bold; color:black;">
-    <h3 style="margin:0;">nav foo</h3>
+    <h3 style="margin:0;">Navigation</h3>
     <h4 style="color:white; font-weight:bold; line-height:1.5em; margin-top:0; margin-left:10px;">
-      dis<br>dat<br>de udda ting
+      <a href="\">Home</a>
+      <br>
+      <a href="\profile">Profile</a>
     </h4>
   </nav>
 
@@ -29,10 +31,10 @@
     <form method="POST">
         <label>Blog Name:</label><br>
         <input type="text" name="blog_name" value="{{blog_name}}" required><br><br>
-        
+
         <label>Content:</label><br>
         <textarea name="content" rows="10" cols="50" required>{{content}}</textarea><br><br>
-        
+
         <button type="submit">Save</button>
     </form>
 

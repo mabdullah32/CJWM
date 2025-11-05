@@ -1,50 +1,43 @@
 <!DOCTYPE html>
-
-<!--
-  Mustafa Abdullah, William Li, Jiefeng Ou, Cody Wong
-  CJWM
-  P00: Move Slowly and Fix Things
- -->
-
 <html>
   <head>
     <title>CJWM</title>
   </head>
 
-  <body style="background-color:#747475; font-family:sans-serif; margin:0;">
+  <body>
 
-    <div class="header" style="text-align:center; background-color:#bebebe; color:white;">
-      <h1 style="margin:0; color:white;">CJWM Blog</h1>
+    <div class="header">
+      <h1>CJWM Blog</h1>
     </div>
 
-    <div class="middle" style="background-color:#909090; padding:10px; overflow:auto;">
+    <div class="middle">
 
-      <nav style="float:left; width:150px; font-weight:bold; color:black;">
-        <h3 style="margin:0;">nav foo</h3>
-        <h4 style="color:white; font-weight:bold; line-height:1.5em; margin-top:0; margin-left:10px;">
-          dis<br>dat<br>de udda ting
-        </h4>
+      <!-- Navbar -->
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        </ul>
       </nav>
 
-      <main style="margin-left:180px; color:black;">
-        <h2 style="margin-top:0; font-weight:bold;">main foo heading</h2>
+      <main>
+        <h2>Blog List</h2>
 
-        <form action="/handle_search_query">
+        <!-- Search form -->
+        <form action="{{ url_for('handle_search_query') }}" method="GET">
           <input type="text" name="searched_blog" placeholder="Search">
-          <input type="submit" name="sub1">
+          <input type="submit" value="Search">
         </form>
 
-        <p style="color:black;">
+        <ul>
           {% for blog_id, blog_name in sorted_blogs_list %}
-            <li><a href="blogs/{{blog_id}}">{{blog_name}}</a> <a href="blogs/{{blog_id}}/edit">(edit)</a></li>
+            <li>
+              <a href="{{ url_for('blogs', blog_id=blog_id) }}">{{ blog_name }}</a>
+              <a href="{{ url_for('edit_blog', blog_id=blog_id) }}">(edit)</a>
+            </li>
           {% endfor %}
-        </p>
+        </ul>
       </main>
     </div>
-
-    <footer>
-      Copyright ©2024 Clyde "Thluffy" Sinclair
-    </footer>
 
   </body>
 </html>
