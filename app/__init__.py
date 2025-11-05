@@ -2,13 +2,12 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import datetime
 
-app = Flask(__name__) #initializes flask
+app = Flask(__name__)
 
 DB_FILE="database.db"
-db = sqlite3.connect(DB_FILE, check_same_thread=False) #initializes sqlite3
+db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
-#Flask routes home.html
 @app.route("/", methods=['GET','POST'])
 def home():
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
@@ -28,7 +27,6 @@ def handle_search_query():
 def profile():
     return render_template('profile.html')
 
-#Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
@@ -70,6 +68,7 @@ def edit_blog(blog_id):
 #==========================================================
 
 #users (username, password, creation_date, last_login)
+
 c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
@@ -78,7 +77,6 @@ CREATE TABLE IF NOT EXISTS users (
     last_login DATE
 )""")
 
-#blogs (blog_id, blog_name, author_name, content, timestamp)
 c.execute("""
 CREATE TABLE IF NOT EXISTS blogs (
     blog_id INTEGER PRIMARY KEY,
@@ -89,7 +87,6 @@ CREATE TABLE IF NOT EXISTS blogs (
     FOREIGN KEY (author_name) REFERENCES users(username)
 )""")
 
-#edits (edit_id, blog_id, old_content, new_content, timestamp)
 c.execute("""
 CREATE TABLE IF NOT EXISTS edits (
     edit_id INTEGER PRIMARY KEY,
@@ -113,3 +110,4 @@ if __name__ == "__main__": #false if this file imported as module
     app.run()
 
 db.close()  #close database
+

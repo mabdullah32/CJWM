@@ -13,9 +13,24 @@ Dev3: William
 A weblog hosting site where users can register to create, update, and edit their own blog entries, as well as view the blogs of other users.
 
 ### Install Guides:
-1. <code>git clone https://github.com/stuy-softdev/CJWM.git</code>
-2. <code>cd CJWM</code>
-3. <code>pip install -r requirements.txt</code>
+Pre-requisites:
+  - python3 installed 
+  - git installed
+
+
+Look at the steps after installing pre-requisites 
+ ```
+   git clone https://github.com/stuy-softdev/CJWM.git
+```
+```
+  cd CJWM
+```
+```
+  pip install -r requirements.txt
+```
+
 
 ### Launch Codes:
-1. <code>python app/__init__.py</code>
+```
+python app/__init__.py
+```
