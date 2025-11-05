@@ -115,8 +115,11 @@ jiefengO -- 2025-11-03 10:56
 - Added extra test cases for db
 
 jiefengO -- 2025-11-04 23:43
-- Search query shows blog with name and content that matches, ordered by exact name -> word in name -> word in content
 -- EXTERNAL README REVIEW --
 - Pre-Reqs should be added that includes installing python and github
 - __init__.py should have the underscores instead of being bolded
 - git clone should use SSH and not https
+
+jiefengO -- 2025-11-05 00:23
+- Search query shows blog with name and content that matches, ordered by exact name -> word in name -> word in content
+- Design document no longer includes multiple python files because we've switched from that to using just one file.
