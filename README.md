@@ -20,7 +20,7 @@ Pre-requisites:
 
 Look at the steps after installing pre-requisites 
  ```
-   git clone https://github.com/stuy-softdev/CJWM.git
+   git clone git@github.com:mabdullah32/CJWM.git
 ```
 ```
   cd CJWM
