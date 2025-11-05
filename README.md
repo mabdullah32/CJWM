@@ -13,12 +13,11 @@ Dev3: William
 A weblog hosting site where users can register to create, update, and edit their own blog entries, as well as view the blogs of other users.
 
 ### Install Guides:
-Pre-requisites:
+Pre-Requisites:
   - python3 installed 
   - git installed
 
-
-Look at the steps after installing pre-requisites 
+In your terminal, type:
  ```
    git clone https://github.com/stuy-softdev/CJWM.git
 ```
