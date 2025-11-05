@@ -21,7 +21,6 @@ def handle_search_query():
     blog_req = request.args['searched_blog']
     searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
     searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
-    print(searched_blogs_list)
     return render_template('home.html', sorted_blogs_list = searched_blogs_list)
 
 #Flask routes profile.html
@@ -29,6 +28,7 @@ def handle_search_query():
 def profile():
     return render_template('profile.html')
 
+#Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
