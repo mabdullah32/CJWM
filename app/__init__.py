@@ -75,8 +75,8 @@ c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
     password TEXT,
-    creation_date DATE,
-    last_login DATE
+    creation_date TEXT,
+    last_login TEXT
 )""")
 
 c.execute("""
@@ -99,7 +99,12 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-#Generates Blog 1 and 2 for testing purposes
+#Generates example users for testing purposes
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Harry Potter', 'boywholived', datetime('1980-07-31 05:30:00'), datetime('2022-06-05 14:52:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Kermit the Frog', 'idkwhour', datetime('2000-01-01 00:00:00'), datetime('2024-10-04 09:51:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Jeff', 'blogger123', datetime('2008-05-23 20:00:00'), datetime('2025-11-05 10:52:00'))")
+
+#Generates example blogs for testing purposes
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'Harry Potter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'Harry Potter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")

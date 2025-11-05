@@ -126,3 +126,4 @@ jiefengO -- 2025-11-05 00:23
 
 jiefengO -- 2025-11-05 11:00
 - Fixed a bug where multiple of the same search query can be shown in the home page.
+- Added multiple users for profile testing
