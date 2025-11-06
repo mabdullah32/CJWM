@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import datetime
+import bcrypt
 
 app = Flask(__name__)
 
@@ -16,20 +17,26 @@ def home():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+
     if(request.method == 'POST'):
         username = request.form['username']
         password = request.form['password']
 
-        user = c.execute("SELECT * FROM users WHERE username = ?")
-    return render_template('login.html')
+        user = c.execute("SELECT * FROM users WHERE username = ?",(username,)).fetchone()
+        salt = bcrypt.gensalt()
+        if(user):
+            hash = bcrypt.hashpw(user, salt)
 
+
+
+        return render_template('login.html')
 @app.route("/profile", methods=['GET','POST'])
 def profile():
     return render_template('profile.html')
 
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
-def blogs(blog_id):
+def blogs(blog_id):nd )
     if blog_id == None:
         return "Page Not Found 404" #doesn't seem to do anything?
     else:
@@ -46,19 +53,19 @@ def edit_blog(blog_id):
     if request.method == 'POST':
         new_blog_name = request.form.get('blog_name')
         new_content = request.form.get('content')
-        
+
         blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
         old_content = blog_info[0]
-        
+
         c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
                   (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-        
+
         c.execute("UPDATE blogs SET blog_name = ?, content = ?, timestamp = ? WHERE blog_id = ?",
                   (new_blog_name, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), blog_id))
-        
+
         db.commit()
         return redirect(f'/blogs/{blog_id}')
-    
+
     blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
