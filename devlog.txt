@@ -130,3 +130,6 @@ jiefengO -- 2025-11-05 11:00
 
 williamL -- 2025-11-05 10:47
 - Changed html for home.html and added some navbar links to home.html, profile.html, blogs.html, and edit_blogs.html
+
+mustafaA -- 2025-11-06 6:20
+- Made progress on flask login implementation using request
