@@ -16,6 +16,11 @@ def home():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if(request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
+
+        user = c.execute("SELECT * FROM users WHERE username = ?")
     return render_template('login.html')
 
 @app.route("/profile", methods=['GET','POST'])
