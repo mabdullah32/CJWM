@@ -133,3 +133,6 @@ williamL -- 2025-11-05 10:47
 
 mustafaA -- 2025-11-06 6:20
 - Made progress on flask login implementation using request
+
+williamL -- 2025-11-06 10:56
+- Started to add in profile route work in init.py and editing profile.html accordingly
