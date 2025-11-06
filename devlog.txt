@@ -133,3 +133,6 @@ williamL -- 2025-11-05 10:47
 
 mustafaA -- 2025-11-06 6:20
 - Made progress on flask login implementation using request
+
+jiefengO -- 2025-11-06 11:00
+- Search query shows users with username that matches
