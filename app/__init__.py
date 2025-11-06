@@ -8,16 +8,23 @@ DB_FILE="database.db"
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
+#Flask routes home page
 @app.route("/", methods=['GET','POST'])
 def home():
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
     sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
 
-@app.route("/profile", methods=['GET','POST'])
-def profile():
-    return render_template('profile.html')
 
+@app.route("/handle_search_query", methods=['GET', 'POST'])
+def handle_search_query():
+    blog_req = request.args['searched_blog']
+    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
+    return render_template('home.html', sorted_blogs_list = searched_blogs_list)
+
+
+#Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
@@ -37,22 +44,30 @@ def edit_blog(blog_id):
     if request.method == 'POST':
         new_blog_name = request.form.get('blog_name')
         new_content = request.form.get('content')
-        
+
         blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
         old_content = blog_info[0]
-        
+
         c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
                   (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-        
+
         c.execute("UPDATE blogs SET blog_name = ?, content = ?, timestamp = ? WHERE blog_id = ?",
                   (new_blog_name, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), blog_id))
-        
+
         db.commit()
         return redirect(f'/blogs/{blog_id}')
-    
+
     blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
+
+#Flask routes profile.html
+@app.route("/profile", methods=['GET','POST'])
+def profile():
+    info_list = c.execute(f"SELECT username, password, creation_date, last_login FROM users")
+
+    return render_template('profile.html', info_list = info_list)
+
 
 #==========================================================
 #SQLITE3 DATABASE LIES BENEATH HERE
@@ -64,8 +79,8 @@ c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
     password TEXT,
-    creation_date DATE,
-    last_login DATE
+    creation_date TEXT,
+    last_login TEXT
 )""")
 
 c.execute("""
@@ -88,8 +103,15 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-#Generates Blog 1 and 2 for testing purposes
+#Generates example users for testing purposes
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Harry Potter', 'boywholived', datetime('1980-07-31 05:30:00'), datetime('2022-06-05 14:52:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Kermit the Frog', 'idkwhour', datetime('2000-01-01 00:00:00'), datetime('2024-10-04 09:51:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Jeff', 'blogger123', datetime('2008-05-23 20:00:00'), datetime('2025-11-05 10:52:00'))")
+
+#Generates example blogs for testing purposes
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'Harry Potter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'Harry Potter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
 c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
@@ -99,4 +121,3 @@ if __name__ == "__main__": #false if this file imported as module
     app.run()
 
 db.close()  #close database
-
