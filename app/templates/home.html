@@ -20,14 +20,13 @@
       </nav>
 
       <main>
-        <h2>Blog List</h2>
-
         <!-- Search form -->
         <form action="{{ url_for('handle_search_query') }}" method="GET">
-          <input type="text" name="searched_blog" placeholder="Search">
+          <input type="text" name="searched_item" placeholder="Search">
           <input type="submit" value="Search">
         </form>
 
+        <h2>Blog List</h2>
         <ul>
           {% for blog_id, blog_name in sorted_blogs_list %}
             <li>
@@ -36,6 +35,18 @@
             </li>
           {% endfor %}
         </ul>
+
+        {%if users_list | length != 0 %}
+        <h2>Users List</h2>
+        <ul>
+          {% for users in users_list %}
+          <li>
+            {{users}}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
       </main>
     </div>
 

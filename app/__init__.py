@@ -13,15 +13,17 @@ c = db.cursor()
 def home():
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
     sorted_blogs_list = [x for x in sorted_blogs]
-    return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
+    return render_template('home.html', sorted_blogs_list = sorted_blogs_list, users_list = [])
 
 
 @app.route("/handle_search_query", methods=['GET', 'POST'])
 def handle_search_query():
-    blog_req = request.args['searched_blog']
-    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{blog_req}%' ORDER BY timestamp DESC")]
-    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
-    return render_template('home.html', sorted_blogs_list = searched_blogs_list)
+    search_req = request.args['searched_item']
+    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{search_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{search_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
+
+    searched_users_list = [x[0] for x in c.execute(f"SELECT username FROM users WHERE username LIKE '%{search_req}%'")]
+    return render_template('home.html', sorted_blogs_list = searched_blogs_list, users_list = searched_users_list)
 
 #Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
