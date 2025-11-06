@@ -23,10 +23,6 @@ def handle_search_query():
     searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{blog_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
     return render_template('home.html', sorted_blogs_list = searched_blogs_list)
 
-#Flask routes profile.html
-@app.route("/profile", methods=['GET','POST'])
-def profile():
-    return render_template('profile.html')
 
 #Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
@@ -64,6 +60,14 @@ def edit_blog(blog_id):
     blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
+
+#Flask routes profile.html
+@app.route("/profile", methods=['GET','POST'])
+def profile():
+    info_list = c.execute(f"SELECT username, password, creation_date, last_login FROM users")
+
+    return render_template('profile.html', info_list = info_list)
+
 
 #==========================================================
 #SQLITE3 DATABASE LIES BENEATH HERE
