@@ -187,3 +187,6 @@ williamL -- 2025-11-06 10:56
 
 codyW -- 2025-11-06 10:57
 - Fixed Blog.html and remove some hrefs
+
+mustafaA -- 2025-11-06 10:58
+- Started password hashing/salting with bcrypt, implementing sessions with login
