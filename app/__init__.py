@@ -107,8 +107,8 @@ CREATE TABLE IF NOT EXISTS edits (
 )""")
 
 #Generates example users for testing purposes
-c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Harry Potter', 'boywholived', datetime('1980-07-31 05:30:00'), datetime('2022-06-05 14:52:00'))")
-c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Kermit the Frog', 'idkwhour', datetime('2000-01-01 00:00:00'), datetime('2024-10-04 09:51:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('HarryPotter', 'boywholived', datetime('1980-07-31 05:30:00'), datetime('2022-06-05 14:52:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('KermitTheFrog', 'idkwhour', datetime('2000-01-01 00:00:00'), datetime('2024-10-04 09:51:00'))")
 c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Jeff', 'blogger123', datetime('2008-05-23 20:00:00'), datetime('2025-11-05 10:52:00'))")
 
 #Generates example blogs for testing purposes
