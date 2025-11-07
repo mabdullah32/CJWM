@@ -197,3 +197,7 @@ mustafaA -- 2025-11-06 10:58
 mustafaA -- 2025-11-07 9:20
 - Created new template for create_account, started register logic, having trouble with password hashing
 - branch login
+
+williamL --  2025-11-07 10:56
+- Updated init.py to be able to select specific user and the blogs of that user
+- Updated profile.html to work with init.py to display specific blogs
