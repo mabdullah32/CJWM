@@ -38,6 +38,7 @@ def blogs(blog_id):
         except Exception:
             return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
         blog_info = [x for x in blog_db_info][0]
+        print(blog_info[3])
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
 #Flask routes edit_blogs.html
@@ -111,10 +112,10 @@ c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last
 c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Jeff', 'blogger123', datetime('2008-05-23 20:00:00'), datetime('2025-11-05 10:52:00'))")
 
 #Generates example blogs for testing purposes
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'Harry Potter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'Harry Potter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'HarryPotter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'HarryPotter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'HarryPotter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'KermitTheFrog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
 
