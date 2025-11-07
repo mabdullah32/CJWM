@@ -4,6 +4,7 @@ from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
+app.debug
 
 DB_FILE="database.db"
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -15,28 +16,40 @@ def home():
     sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
 
+@app.route("/create_account", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        c.execute("INSERT INTO users (username, password, creation_date, last_login) VALUES (?, ?, ?, ?)", (username, hash, datetime.now(), None))
+        db.commit()
+        return redirect(url_for('login'))
+    
+    return render_template("create_account.html")
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
 
     if(request.method == 'POST'):
-        username = request.form['username']
+        username = request.form['username']  
         password = request.form['password']
 
         user = c.execute("SELECT * FROM users WHERE username = ?",(username,)).fetchone()
         salt = bcrypt.gensalt()
-        if(user):
-            hash = bcrypt.hashpw(user, salt)
+        hash = bcrypt.hashpw(password.encode('utf-8'), salt)
 
-
-
-        return render_template('login.html')
+    return render_template('login.html')
 @app.route("/profile", methods=['GET','POST'])
 def profile():
     return render_template('profile.html')
 
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
-def blogs(blog_id):nd )
+def blogs(blog_id):
     if blog_id == None:
         return "Page Not Found 404" #doesn't seem to do anything?
     else:
