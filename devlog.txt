@@ -193,3 +193,7 @@ codyW -- 2025-11-06 10:57
 
 mustafaA -- 2025-11-06 10:58
 - Started password hashing/salting with bcrypt, implementing sessions with login
+
+mustafaA -- 2025-11-07 9:20
+- Created new template for create_account, started register logic, having trouble with password hashing
+- branch login
