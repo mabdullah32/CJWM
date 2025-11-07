@@ -66,9 +66,10 @@ def edit_blog(blog_id):
 #Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
 def profile():
-    info_list = c.execute(f"SELECT username, password, creation_date, last_login FROM users")
+    username = c.execute(f"SELECT username FROM users").fetchall()[0][0]
+    blogs = c.execute(f"SELECT content FROM blogs WHERE author_name = '{username}'")
 
-    return render_template('profile.html', info_list = info_list)
+    return render_template('profile.html', user = username, blogs = blogs)
 
 
 #==========================================================
