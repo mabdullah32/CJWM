@@ -38,9 +38,11 @@ def login():
         username = request.form['username']  
         password = request.form['password']
 
-        user = c.execute("SELECT * FROM users WHERE username = ?",(username,)).fetchone()
+        # user = c.execute("SELECT * FROM users WHERE username = ?",(username,)).fetchone()
         salt = bcrypt.gensalt()
         hash = bcrypt.hashpw(password.encode('utf-8'), salt)
+        c.execute("INSERT INTO users (username, hash, creation_date, last_login) VALUES(?, ?, ?, ?)", (username, hash, None, datetime.now()))
+        db.commit()
 
     return render_template('login.html')
 @app.route("/profile", methods=['GET','POST'])
