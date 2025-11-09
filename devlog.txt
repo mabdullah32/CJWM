@@ -66,7 +66,55 @@ jiefengO -- 2025-10-28 17:00
 mustafaA -- 2025-10-28 07:30
 -- EXTERNAL README REVIEW --
 - Install guide summary: Clone the repository, navigate into the repository, install the dependencies
-- Needs to have the user of the app going into the app directory instead of the base repo, doesn't run the flask app either
+- Needs to have the user of the app going into the app directory <!DOCTYPE html>
+
+<!--
+  Mustafa Abdullah, William Li, Jiefeng Ou, Cody Wong
+  CJWM
+  P00: Move Slowly and Fix Things
+ -->
+
+<!DOCTYPE html>
+
+<html>
+   <head>
+     <title>CJWM: {{blog_name}}</title>
+   </head>
+
+   <body style="background-color:#747475; font-family:sans-serif; margin:0;">
+
+     <div class="header" style="text-align:center; background-color:#bebebe; color:white;">
+       <h1 style="margin:0; color:white;">CJWM Blog</h1>
+     </div>
+
+     <div class="middle" style="background-color:#909090; padding:10px; overflow:auto;">
+
+       <nav style="float:left; width:150px; font-weight:bold; color:black;">
+         <h3 style="margin:0;">Created by: {{author_name}}</h3>
+         <h4 style="color:white; font-weight:bold; line-height:1.5em; margin-top:0; margin-left:10px;">
+           {{timestamp}}<br>
+           dat<br>
+           de udda ting
+         </h4>
+       </nav>
+
+       <main style="margin-left:180px; color:black;">
+         <h2 style="margin-top:0; font-weight:bold;">{{blog_name}}</h2>
+
+
+         <p style="color:black;">
+           {{content}}
+         </p>
+
+       </main>
+     </div>
+
+     <footer>
+       Copyright Â©2024 Clyde "Thluffy" Sinclair
+     </footer>
+
+   </body>
+ </html>instead of the base repo, doesn't run the flask app either
 - Launch codes: export FLASK_APP=app --> this isn't as specific as it could be
 
 williamL -- 2025-10-29 10:30
@@ -102,3 +150,54 @@ CodyW -- 2025-10-31 8:25
 - Implemented the save feature in flash using "GET" and "POST" to save data to the sqlite table.
 - Added from datetime import datetime to smooth out or process.
 - Fixed the Cancel Link to actually go back into the original blog.
+
+jiefengO -- 2025-10-31 11:13
+- Working on allowing home page to process search queries for blogs and return a list of related blogs
+
+mustafaA -- 2025-11-02 23:30
+- Fixed merge conflicts across all branches, updated with main __init__.py file
+
+jiefengO -- 2025-11-03 10:56
+- Reviewed install guide and launch codes of fore and geodes
+- Helped edit our readme
+- Added extra test cases for db
+
+jiefengO -- 2025-11-04 23:43
+-- EXTERNAL README REVIEW --
+- Pre-Reqs should be added that includes installing python and github
+- __init__.py should have the underscores instead of being bolded
+- git clone should use SSH and not https
+
+jiefengO -- 2025-11-05 00:23
+- Search query shows blog with name and content that matches, ordered by exact name -> word in name -> word in content
+- Design document no longer includes multiple python files because we've switched from that to using just one file.
+
+jiefengO -- 2025-11-05 11:00
+- Fixed a bug where multiple of the same search query can be shown in the home page.
+- Added multiple users for testing purposes
+
+williamL -- 2025-11-05 10:47
+- Changed html for home.html and added some navbar links to home.html, profile.html, blogs.html, and edit_blogs.html
+
+mustafaA -- 2025-11-06 6:20
+- Made progress on flask login implementation using request
+
+jiefengO -- 2025-11-06 11:00
+- Search query shows users with username that matches
+
+williamL -- 2025-11-06 10:56
+- Started to add in profile route work in init.py and editing profile.html accordingly
+
+codyW -- 2025-11-06 10:57
+- Fixed Blog.html and remove some hrefs
+
+mustafaA -- 2025-11-06 10:58
+- Started password hashing/salting with bcrypt, implementing sessions with login
+
+mustafaA -- 2025-11-07 9:20
+- Created new template for create_account, started register logic, having trouble with password hashing
+- branch login
+
+williamL --  2025-11-07 10:56
+- Updated init.py to be able to select specific user and the blogs of that user
+- Updated profile.html to work with init.py to display specific blogs

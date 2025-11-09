@@ -10,11 +10,12 @@ DB_FILE="database.db"
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
+#Flask routes home page
 @app.route("/", methods=['GET','POST'])
 def home():
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
     sorted_blogs_list = [x for x in sorted_blogs]
-    return render_template('home.html', sorted_blogs_list = sorted_blogs_list)
+    return render_template('home.html', sorted_blogs_list = sorted_blogs_list, users_list = [])
 
 @app.route("/create_account", methods=['GET', 'POST'])
 def register():
@@ -49,6 +50,17 @@ def login():
 def profile():
     return render_template('profile.html')
 
+@app.route("/handle_search_query", methods=['GET', 'POST'])
+def handle_search_query():
+    search_req = request.args['searched_item']
+    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{search_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{search_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
+
+    searched_users_list = [x[0] for x in c.execute(f"SELECT username FROM users WHERE username LIKE '%{search_req}%'")]
+    return render_template('home.html', sorted_blogs_list = searched_blogs_list, users_list = searched_users_list)
+
+
+#Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
@@ -60,6 +72,7 @@ def blogs(blog_id):
         except Exception:
             return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
         blog_info = [x for x in blog_db_info][0]
+        print(blog_info[3])
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
 #Flask routes edit_blogs.html
@@ -85,6 +98,15 @@ def edit_blog(blog_id):
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
+#Flask routes profile.html
+@app.route("/profile", methods=['GET','POST'])
+def profile():
+    username = c.execute(f"SELECT username FROM users").fetchall()[0][0]
+    blogs = c.execute(f"SELECT content FROM blogs WHERE author_name = '{username}'")
+
+    return render_template('profile.html', user = username, blogs = blogs)
+
+
 #==========================================================
 #SQLITE3 DATABASE LIES BENEATH HERE
 #==========================================================
@@ -94,8 +116,8 @@ c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,
     password TEXT,
-    creation_date DATE,
-    last_login DATE
+    creation_date TEXT,
+    last_login TEXT
 )""")
 
 c.execute("""
@@ -118,9 +140,16 @@ CREATE TABLE IF NOT EXISTS edits (
     FOREIGN KEY (blog_id) REFERENCES blogs(blog_id)
 )""")
 
-#Generates Blog 1 and 2 for testing purposes
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'Harry Potter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
-c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'Kermit the Frog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
+#Generates example users for testing purposes
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('HarryPotter', 'boywholived', datetime('1980-07-31 05:30:00'), datetime('2022-06-05 14:52:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('KermitTheFrog', 'idkwhour', datetime('2000-01-01 00:00:00'), datetime('2024-10-04 09:51:00'))")
+c.execute("INSERT OR REPLACE INTO users (username, password, creation_date, last_login) VALUES ('Jeff', 'blogger123', datetime('2008-05-23 20:00:00'), datetime('2025-11-05 10:52:00'))")
+
+#Generates example blogs for testing purposes
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (1, 'Magic', 'HarryPotter', 'Theres no need to call me sir, professor', datetime('1998-05-02 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (3, 'Magical Wands', 'HarryPotter', 'Avada Kedavra', datetime('1991-08-01 12:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (4, 'Voldemort', 'HarryPotter', 'He is a magical guy doing bad stuff', datetime('1981-10-31 20:00:00'))")
+c.execute("INSERT OR REPLACE INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (2, 'Frogs', 'KermitTheFrog', 'I AM FROG FROG IS AWESOME', datetime('2025-10-30 10:40:15'))")
 
 db.commit() #save changes
 

@@ -8,22 +8,44 @@
 <head>
 <title>Edit Blog</title>
 </head>
-<body>
+<body style="background-color:#747475; font-family:sans-serif; margin:0;">
 
-<h1>Edit Blog</h1>
+<div class="header" style="text-align:center; background-color:#bebebe; color:white;">
+  <h1 style="margin:0; color:white;">CJWM Blog</h1>
+</div>
 
-<form method="POST">
-    <label>Blog Name:</label><br>
-    <input type="text" name="blog_name" value="{{blog_name}}" required><br><br>
+<div class="middle" style="background-color:#909090; padding:10px; overflow:auto;">
 
-    <label>Content:</label><br>
-    <textarea name="content" rows="10" cols="50" required>{{content}}</textarea><br><br>
+  <nav style="float:left; width:150px; font-weight:bold; color:black;">
+    <h3 style="margin:0;">Navigation</h3>
+    <h4 style="color:white; font-weight:bold; line-height:1.5em; margin-top:0; margin-left:10px;">
+      <a href="\">Home</a>
+      <br>
+      <a href="\profile">Profile</a>
+    </h4>
+  </nav>
 
-    <button type="submit">Save</button>
-</form>
+  <main style="margin-left:180px; color:black;">
+    <h2 style="margin-top:0; font-weight:bold;">Edit Blog</h2>
 
-<br>
-<a href="/blogs/{{blog_id}}.html">Cancel</a>
+    <form method="POST">
+        <label>Blog Name:</label><br>
+        <input type="text" name="blog_name" value="{{blog_name}}" required><br><br>
+
+        <label>Content:</label><br>
+        <textarea name="content" rows="10" cols="50" required>{{content}}</textarea><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <br>
+    <a href="/blogs/{{blog_id}}">Cancel</a>
+  </main>
+</div>
+
+<footer>
+  Copyright ©2024 Clyde "Thluffy" Sinclair
+</footer>
 
 </body>
 </html>
