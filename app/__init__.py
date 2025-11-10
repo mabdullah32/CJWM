@@ -16,9 +16,22 @@ c = db.cursor()
 def home():
     if 'username' not in session:
         return redirect(url_for('login'))
+
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
     sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_blogs_list, users_list = [])
+
+@app.route("/handle_search_query", methods=['GET', 'POST'])
+def handle_search_query():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    search_req = request.args['searched_item']
+    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{search_req}%' ORDER BY timestamp DESC")]
+    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{search_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
+
+    searched_users_list = [x[0] for x in c.execute(f"SELECT username FROM users WHERE username LIKE '%{search_req}%'")]
+    return render_template('home.html', sorted_blogs_list = searched_blogs_list, users_list = searched_users_list)
 
 @app.route("/create_account", methods=['GET', 'POST'])
 def register():
@@ -63,15 +76,6 @@ def login():
 
     return render_template('login.html')
 
-@app.route("/handle_search_query", methods=['GET', 'POST'])
-def handle_search_query():
-    search_req = request.args['searched_item']
-    searched_blogs_list = [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE blog_name LIKE '%{search_req}%' ORDER BY timestamp DESC")]
-    searched_blogs_list += [x for x in c.execute(f"SELECT blog_id, blog_name FROM blogs WHERE content LIKE '%{search_req}%' ORDER BY timestamp DESC") if x not in searched_blogs_list]
-
-    searched_users_list = [x[0] for x in c.execute(f"SELECT username FROM users WHERE username LIKE '%{search_req}%'")]
-    return render_template('home.html', sorted_blogs_list = searched_blogs_list, users_list = searched_users_list)
-
 
 #Flask routes blogs.html
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
@@ -84,7 +88,7 @@ def blogs(blog_id):
         return "Page Not Found 404" #doesn't seem to do anything?
     else:
         try:
-            blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+            blog_db_info = c.execute("SELECT * FROM blogs WHERE blog_id = ?", (blog_id))
             blog_info = [x for x in blog_db_info][0]
         except Exception:
             return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
@@ -102,7 +106,7 @@ def edit_blog(blog_id):
         new_blog_name = request.form.get('blog_name')
         new_content = request.form.get('content')
 
-        blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
+        blog_info = c.execute("SELECT content FROM blogs WHERE blog_id = ?", (blog_id)).fetchone()
         old_content = blog_info[0]
         # author_name = 
 
