@@ -41,7 +41,7 @@
         <ul>
           {% for users in users_list %}
           <li>
-            {{users}}
+            <a href="/profile?u={{users}}">{{ users }}</a>
           </li>
           {% endfor %}
         </ul>
