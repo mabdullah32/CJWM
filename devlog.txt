@@ -154,3 +154,9 @@ williamL -- 2025-09 10:51
 
 williamL -- 2025-09 11:40
 - Removed footers from html files and cleaned up css
+
+jiefengO -- 2025-11-10 00:00
+- Fixed a bug in blog view and edit where blogs with invalid ids would be allowed to run, causing errors
+- Created a way for users to create blogs
+- Updated requirements.txt
+- Updated SQLite statements to not use f-strings
