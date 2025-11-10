@@ -33,6 +33,7 @@
           {% for blog_id, blog_name in sorted_blogs_list %}
             <li>
               <a href="{{ url_for('blogs', blog_id=blog_id) }}">{{ blog_name }}</a>
+              <a href="{{ url_for('edit_blog', blog_id=blog_id) }}">(edit)</a>
             </li>
           {% endfor %}
         </ul>
