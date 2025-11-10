@@ -65,12 +65,34 @@ def edit_blog(blog_id):
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
 #Flask routes profile.html
-@app.route("/profile", methods=['GET','POST'])
+@app.route("/profile", methods=["GET"])
 def profile():
-    username = c.execute(f"SELECT username FROM users").fetchall()[0][0]
-    blogs = c.execute(f"SELECT content FROM blogs WHERE author_name = '{username}'")
+    username = request.args.get("u")
 
-    return render_template('profile.html', user = username, blogs = blogs)
+    if not username:
+        return "No username provided. Try /profile?u=HarryPotter"
+
+    try:
+        user_row = c.execute(
+            "SELECT username, creation_date, last_login FROM users WHERE username = ?",
+            (username,)
+        ).fetchone()
+
+        if user_row is None:
+            return f"No such user: {username}"
+
+        blog_rows = c.execute(
+            "SELECT content FROM blogs WHERE author_name = ? ORDER BY timestamp DESC",
+            (username,)
+        ).fetchall()
+
+        blog_contents = [row[0] for row in blog_rows]
+
+
+        return render_template("profile.html", user=username, blogs=blog_contents)
+
+    except Exception as e:
+        return f"Error loading profile: {e}"
 
 
 #==========================================================
