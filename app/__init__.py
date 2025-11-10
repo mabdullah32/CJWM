@@ -60,6 +60,7 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    error = None
 
     if(request.method == 'POST'):
         username = request.form['username']  
@@ -67,14 +68,15 @@ def login():
 
         user = c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password)).fetchone()
         if not user:
-            return "invalid username/password"
+            erorr = "Invalid username or password"
+            return render_template('login.html', error=error)
         
         session['username'] = username
         c.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.now(), username))
         db.commit()
         return redirect(url_for('home'))
 
-    return render_template('login.html')
+    return render_template('login.html', error=None)
 
 
 #Flask routes blogs.html
@@ -100,6 +102,7 @@ def edit_blog(blog_id):
 
     if 'username' not in session:
         return redirect(url_for('login'))
+
     
 
     if request.method == 'POST':
