@@ -162,7 +162,7 @@ def profile():
 
         # Select both blog title and content
         blog_rows = c.execute(
-            "SELECT blog_name, content FROM blogs WHERE author_name = ? ORDER BY timestamp DESC",(username,)).fetchall()
+            "SELECT blog_name, blog_id FROM blogs WHERE author_name = ? ORDER BY timestamp DESC",(username,)).fetchall()
 
         # Pass the session as well for navbar
         return render_template("profile.html", user=username, blogs=blog_rows, session=session)
