@@ -35,10 +35,9 @@ def blogs(blog_id):
     else:
         try:
             blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
+            blog_info = [x for x in blog_db_info][0]
         except Exception:
             return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
-        blog_info = [x for x in blog_db_info][0]
-        print(blog_info[3])
         return render_template('blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], author_name = blog_info[2], content = blog_info[3], timestamp = blog_info[4])
 
 #Flask routes edit_blogs.html
@@ -63,6 +62,24 @@ def edit_blog(blog_id):
     blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
     blog_info = [x for x in blog_db_info][0]
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
+
+@app.route("/new_blog", methods=['GET', 'POST'])
+def create_blog():
+    if request.method == "POST":
+        blog_id = [x[0] for x in c.execute("SELECT MAX(blog_id) + 1 FROM blogs")][0]
+        blog_name = request.form.get('blog_name')
+        author_name = "Requires login system" #FIX LATER
+        content = request.form.get('content')
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        c.execute("INSERT INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (?, ?, ?, ?, ?)", 
+                    (blog_id, blog_name, author_name, content, timestamp))
+        
+        db.commit()
+        return redirect(f'/blogs/{blog_id}')
+    
+    blog_id = [x[0] for x in c.execute("SELECT MAX(blog_id) + 1 FROM blogs")][0]
+    return render_template('edit_blogs.html', blog_id = blog_id, blog_name = "", content = "")
+    
 
 #Flask routes profile.html
 @app.route("/profile", methods=['GET','POST'])
