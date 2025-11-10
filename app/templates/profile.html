@@ -14,13 +14,26 @@
   <body>
     <h1>Profile</h1>
     <h2>User Information</h2>
-    <h2>Blogs</h2>
+
+      <h3>
+
+          {{ user }}
+          <br>
+
+      <h2>Blogs</h2>
+
+          {% for blog in blogs %}
+              {{ blog }}
+          <br>
+          {% endfor %}
+
+      </h3>
+
     <h3>Edit Profile</h3>
 
     <h3>Navigation Links</h3>
-    <a href="edit_blogs.html">Edit Blogs</a>
     <br>
-    <a href="home.html">Home</a>
+    <a href="\">Home</a>
 
 
 
