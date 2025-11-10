@@ -3,15 +3,14 @@
   Mustafa Abdullah, William Li, Jiefeng Ou, Cody Wong
   CJWM
   P00: Move Slowly and Fix Things
- -->
-
+-->
 <html>
-
   <head>
-    <title> Profile </title>
+    <title>Profile</title>
   </head>
-
   <body>
+
+    <!-- NAVBAR -->
     <div class="navbar" style="background-color:#333; padding:10px;">
       <a href="/" style="color:white; margin-right:15px;">Home</a>
       <a href="/new_blog" style="color:white; margin-right:15px;">New Blog</a>
@@ -20,31 +19,21 @@
         <span style="color:white;">Logged in as: {{ session.username }}</span>
       {% endif %}
     </div>
+
     <h1>Profile</h1>
     <h2>User Information</h2>
+    <p>{{ user }}</p>
 
-      <h3>
-
-          {{ user }}
-          <br>
-
-      <h2>Blogs</h2>
-
-          {% for blog in blogs %}
-              {{ blog }}
-          <br>
-          {% endfor %}
-
-      </h3>
-
-    <h3>Edit Profile</h3>
-
-    <h3>Navigation Links</h3>
-    <br>
-    <a href="\">Home</a>
-
-
+    <h2>Blogs</h2>
+    {% if blogs %}
+      {% for blog_name, content in blogs %}
+        <h3>{{ blog_name }}</h3>
+        <p>{{ content }}</p>
+        <hr>
+      {% endfor %}
+    {% else %}
+      <p>This user hasn’t posted any blogs yet.</p>
+    {% endif %}
 
   </body>
-
 </html>

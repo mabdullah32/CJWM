@@ -151,3 +151,6 @@ williamL --  2025-11-07 10:56
 williamL -- 2025-09 10:51
 - Updated profile.html to show the blog name and content
 - Updated profile route in init.py to get profiles using urls
+
+williamL -- 2025-09 11:40
+- Removed footers from html files and cleaned up css
