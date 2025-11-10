@@ -99,11 +99,8 @@ def blogs(blog_id):
 #Flask routes edit_blogs.html
 @app.route("/blogs/<blog_id>/edit", methods=['GET','POST'])
 def edit_blog(blog_id):
-
     if 'username' not in session:
         return redirect(url_for('login'))
-
-    
 
     if request.method == 'POST':
         new_blog_name = request.form.get('blog_name')
@@ -121,11 +118,15 @@ def edit_blog(blog_id):
 
         db.commit()
         return redirect(f'/blogs/{blog_id}')
+
     try:
         blog_db_info = c.execute(f"SELECT * FROM blogs WHERE blog_id = {blog_id}")
         blog_info = [x for x in blog_db_info][0]
     except Exception:
         return f"Page Not Found 404 <br><br>No blog has ID {blog_id}"
+    
+    if session['username'] != blog_info[2]:
+        return redirect(url_for('blogs', blog_id = blog_info[0]))
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
 @app.route("/new_blog", methods=['GET', 'POST'])
