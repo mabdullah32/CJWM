@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
 from datetime import datetime
-import bcrypt
 import os
 
 app = Flask(__name__)
-app.debug
+app.debug = True
 app.secret_key = os.urandom(24)
 
 DB_FILE="database.db"
@@ -23,13 +22,19 @@ def home():
 
 @app.route("/create_account", methods=['GET', 'POST'])
 def register():
+    if 'username' in session:
+        return redirect(url_for('home'))
+
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].strip()
         password = request.form['password']
 
+        if " " in username:
+            return "Username cannot contain spaces."
+
         if c.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone():
-            return "username already exists"
-        
+            return "Username already exists."
+
         c.execute("INSERT INTO users (username, password, creation_date, last_login) VALUES (?, ?, ?, ?)",
                   (username, password, datetime.now(), None))
         db.commit()
@@ -37,6 +42,7 @@ def register():
         return redirect(url_for('login'))
     
     return render_template("create_account.html")
+
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -98,6 +104,7 @@ def edit_blog(blog_id):
 
         blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
         old_content = blog_info[0]
+        author_name = session['username']
 
         c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
                   (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
@@ -119,7 +126,7 @@ def create_blog():
     if request.method == "POST":
         blog_id = [x[0] for x in c.execute("SELECT MAX(blog_id) + 1 FROM blogs")][0]
         blog_name = request.form.get('blog_name')
-        author_name = "Requires login system" #FIX LATER
+        author_name = session['username']
         content = request.form.get('content')
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         c.execute("INSERT INTO blogs (blog_id, blog_name, author_name, content, timestamp) VALUES (?, ?, ?, ?, ?)", 

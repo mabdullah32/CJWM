@@ -6,6 +6,15 @@
 
   <body>
 
+    <div class="navbar" style="background-color:#333; padding:10px;">
+      <a href="/" style="color:white; margin-right:15px;">Home</a>
+      <a href="/new_blog" style="color:white; margin-right:15px;">New Blog</a>
+      {% if session.username %}
+        <a href="/profile?u={{ session.username }}" style="color:white; margin-right:15px;">My Profile</a>
+        <span style="color:white;">Logged in as: {{ session.username }}</span>
+      {% endif %}
+    </div>
+
     <div class="header">
       <h1>CJWM Blog</h1>
     </div>
