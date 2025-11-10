@@ -1,42 +1,26 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Login Form</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Login - CJWM</title>
 </head>
-
 <body>
-    <div class="main">
-        <h1>Blog Site</h1>
-        <h3>Enter your username and password</h3>
 
-        <form action="">
-            <label for="first">
-                Username:
-            </label>
-            <input type="text" id="first" name="first" 
-                placeholder="Enter your Username" required>
+  <h1>Login</h1>
+  <form method="POST" action="{{ url_for('login') }}">
+    <label>Username:</label><br>
+    <input type="text" name="username" required><br><br>
 
-            <label for="password">
-                Password:
-            </label>
-            <input type="password" id="password" name="password" 
-                placeholder="Enter your Password" required>
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
 
-            <div class="wrap">
-                <button type="submit">
-                    Submit
-                </button>
-            </div>
-        </form>
-        
-        <p>Not registered?
-            <a href="create_account" style="text-decoration: none;">
-                Create account:
-            </a>
-        </p>
-    </div>
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Not registered?
+    <a href="{{ url_for('register') }}">Create an account</a>
+  </p>
+
+  <a href="{{ url_for('home') }}">Back to Home</a>
+
 </body>
-
 </html>

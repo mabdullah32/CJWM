@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
 from datetime import datetime
 import bcrypt
+import os
 
 app = Flask(__name__)
 app.debug
+app.secret_key = os.urandom(24)
 
 DB_FILE="database.db"
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -13,6 +15,8 @@ c = db.cursor()
 #Flask routes home page
 @app.route("/", methods=['GET','POST'])
 def home():
+    if 'username' not in session:
+        return redirect(url_for('login'))
     sorted_blogs = c.execute("SELECT blog_id, blog_name FROM blogs ORDER BY timestamp DESC")
     sorted_blogs_list = [x for x in sorted_blogs]
     return render_template('home.html', sorted_blogs_list = sorted_blogs_list, users_list = [])
@@ -23,10 +27,13 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-        c.execute("INSERT INTO users (username, password, creation_date, last_login) VALUES (?, ?, ?, ?)", (username, hash, datetime.now(), None))
+        if c.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone():
+            return "username already exists"
+        
+        c.execute("INSERT INTO users (username, password, creation_date, last_login) VALUES (?, ?, ?, ?)",
+                  (username, password, datetime.now(), None))
         db.commit()
+
         return redirect(url_for('login'))
     
     return render_template("create_account.html")
@@ -39,13 +46,18 @@ def login():
         username = request.form['username']  
         password = request.form['password']
 
-        # user = c.execute("SELECT * FROM users WHERE username = ?",(username,)).fetchone()
-        salt = bcrypt.gensalt()
-        hash = bcrypt.hashpw(password.encode('utf-8'), salt)
-        c.execute("INSERT INTO users (username, hash, creation_date, last_login) VALUES(?, ?, ?, ?)", (username, hash, None, datetime.now()))
+        user = c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password)).fetchone()
+        if not user:
+            return "invalid username/password"
+        
+        session['username'] = username
+        c.execute("UPDATE users SET last_login=? WHERE username=?", (datetime.now(), username))
         db.commit()
+        return redirect(url_for('home'))
 
     return render_template('login.html')
+
+
 @app.route("/profile", methods=['GET','POST'])
 def profile():
     return render_template('profile.html')
@@ -64,6 +76,9 @@ def handle_search_query():
 @app.route("/blogs/<blog_id>.html", methods=['GET','POST'])
 @app.route("/blogs/<blog_id>", methods=['GET','POST']) #Chrome and Librewolf handle urls differently, requiring both routes
 def blogs(blog_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
     if blog_id == None:
         return "Page Not Found 404" #doesn't seem to do anything?
     else:
@@ -78,6 +93,11 @@ def blogs(blog_id):
 #Flask routes edit_blogs.html
 @app.route("/blogs/<blog_id>/edit", methods=['GET','POST'])
 def edit_blog(blog_id):
+
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+
     if request.method == 'POST':
         new_blog_name = request.form.get('blog_name')
         new_content = request.form.get('content')
@@ -99,12 +119,12 @@ def edit_blog(blog_id):
     return render_template('edit_blogs.html', blog_id = blog_info[0], blog_name = blog_info[1], content = blog_info[3])
 
 #Flask routes profile.html
-@app.route("/profile", methods=['GET','POST'])
-def profile():
-    username = c.execute(f"SELECT username FROM users").fetchall()[0][0]
-    blogs = c.execute(f"SELECT content FROM blogs WHERE author_name = '{username}'")
+# @app.route("/profile", methods=['GET','POST'])
+# def profile():
+#     username = c.execute(f"SELECT username FROM users").fetchall()[0][0]
+#     blogs = c.execute(f"SELECT content FROM blogs WHERE author_name = '{username}'")
 
-    return render_template('profile.html', user = username, blogs = blogs)
+#     return render_template('profile.html', user = username, blogs = blogs)
 
 
 #==========================================================
