@@ -43,6 +43,10 @@
            {{content}}
          </p>
 
+         {% if session.username == author_name %}
+         <p><a href="/blogs/{{blog_id}}/edit">Edit</a></p>
+       {% endif %}
+
        </main>
      </div>
 
