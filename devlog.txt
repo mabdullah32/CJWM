@@ -161,3 +161,7 @@ jiefengO -- 2025-11-10 00:56
 - Updated requirements.txt
 - Updated SQLite statements to not use f-strings
 - Updated edit_blog to stop users from editing other users' pages 
+
+mustafaA 2025-11-10 00:45
+- Implemented user authentication and login system
+- Created navbar, updated html templates
