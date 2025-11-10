@@ -30,7 +30,6 @@
     {% if blogs %}
       {% for blog_name, blog_id in blogs %}
       <a href="{{ url_for('blogs', blog_id=blog_id) }}">{{ blog_name }}</a>
-      <a href="{{ url_for('edit_blog', blog_id=blog_id) }}">(edit)</a>
         <hr>
       {% endfor %}
     {% else %}
