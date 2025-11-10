@@ -104,7 +104,7 @@ def edit_blog(blog_id):
 
         blog_info = c.execute(f"SELECT content FROM blogs WHERE blog_id = {blog_id}").fetchone()
         old_content = blog_info[0]
-        author_name = session['username']
+        # author_name = 
 
         c.execute("INSERT INTO edits (blog_id, old_content, new_content, timestamp) VALUES (?, ?, ?, ?)",
                   (blog_id, old_content, new_content, datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
