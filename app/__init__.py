@@ -57,6 +57,10 @@ def register():
     return render_template("create_account.html")
 
 
+# @app.route("/logout")
+# def logout():
+#     session.pop('username', None)
+#     return redirect(url_for('logout'))
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

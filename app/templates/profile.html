@@ -18,6 +18,7 @@
       {% if session.username %}
         <a href="/profile?u={{ session.username }}" style="color:white; margin-right:15px;">My Profile</a>
         <span style="color:white;">Logged in as: {{ session.username }}</span>
+        <a href="/logout" style="color:white; margin-right:15px;">Logout</a>
       {% endif %}
     </div>
 
